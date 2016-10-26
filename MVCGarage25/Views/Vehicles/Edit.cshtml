@@ -90,7 +90,8 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Check out this vehicle", "CheckOut", new { id = Model.Id }) |
+    @Html.ActionLink("To vehicle list", "Index")
 </div>
 
 @section Scripts {

@@ -11,15 +11,15 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Member.FirstName)
+            @Html.DisplayNameFor(model => model.Member.FullName) (owner)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Member.FirstName)
+            @Html.DisplayFor(model => model.Member.FullName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.VehicleType.Type)
+            @Html.DisplayNameFor(model => model.VehicleType.Type) (vehicle)
         </dt>
 
         <dd>
@@ -59,7 +59,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ParkingCost)
+            @Html.DisplayNameFor(model => model.ParkingCostPerHour)
         </dt>
 
         <dd>
@@ -67,7 +67,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ParkingCostPerHour)
+            @Html.DisplayNameFor(model => model.ParkingCost)
         </dt>
 
         <dd>
@@ -101,6 +101,9 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (!Model.IsCheckedOut)
+    {
+        @Html.ActionLink("Edit this vehicle", "Edit", new { id = Model.Id }) @:|
+    }
+    @Html.ActionLink("To vehicle list", "Index")
 </p>

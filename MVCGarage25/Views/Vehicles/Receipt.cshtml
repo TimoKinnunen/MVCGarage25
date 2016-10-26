@@ -1,12 +1,11 @@
 ﻿@model MVCGarage25.Models.Vehicle
 
 @{
-    ViewBag.Title = "Check out";
+    ViewBag.Title = "Receipt";
 }
 
-<h2>Check out</h2>
+<h2>Receipt</h2>
 
-<h3>Are you sure you want to check out this vehicle?</h3>
 <div>
     <h4>Vehicle</h4>
     <hr />
@@ -100,13 +99,10 @@
         </dd>
 
     </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Check out" class="btn btn-default" /> |
-            @Html.ActionLink("To vehicle list", "Index")
-        </div>
-    }
+    <p>Printed @DateTime.Now</p>
 </div>
+<p>
+    @Html.ActionLink("To vehicle list", "Index")
+</p>
+
+

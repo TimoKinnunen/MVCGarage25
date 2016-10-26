@@ -84,6 +84,10 @@ namespace MVCGarage25.Controllers
             {
                 return HttpNotFound();
             }
+            if (vehicle.IsCheckedOut)
+            {
+                return RedirectToAction("Details/" + vehicle.Id);
+            }
             ViewBag.MemberId = new SelectList(db.Members, "Id", "FullName", vehicle.MemberId);
             ViewBag.VehicleTypeId = new SelectList(db.VehicleTypes, "Id", "Type", vehicle.VehicleTypeId);
             return View(vehicle);
@@ -126,6 +130,10 @@ namespace MVCGarage25.Controllers
             {
                 return HttpNotFound();
             }
+            if (vehicle.IsCheckedOut)
+            {
+                return RedirectToAction("Details/" + vehicle.Id);
+            }
             return View(vehicle);
         }
 
@@ -135,9 +143,32 @@ namespace MVCGarage25.Controllers
         public ActionResult CheckOutConfirmed(int id)
         {
             Vehicle vehicle = db.Vehicles.Find(id);
-            db.Vehicles.Remove(vehicle);
+            //db.Vehicles.Remove(vehicle);
+            vehicle.EndParkingTime = DateTime.Now;
+            db.Entry(vehicle).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+            return RedirectToAction("Receipt/" + vehicle.Id);
+        }
+
+        // GET: Vehicles/Receipt/5
+        public ActionResult Receipt(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Vehicle vehicle = db.Vehicles.Find(id);
+            if (vehicle == null)
+            {
+                return HttpNotFound();
+            }
+            if (!vehicle.IsCheckedOut)
+            {
+                return RedirectToAction("Details/" + vehicle.Id);
+            }
+            return View(vehicle);
+
         }
 
         protected override void Dispose(bool disposing)
