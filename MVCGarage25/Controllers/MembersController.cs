@@ -117,8 +117,17 @@ namespace MVCGarage25.Controllers
         {
             Member member = db.Members.Find(id);
             db.Members.Remove(member);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException)
+            {
+                // Probably violation of referential integrity
+                ViewBag.ErrorMessage = "Could not delete this member. Probably because this member has more vehicles parked in the garage.";
+            }
+            return View(member);
         }
 
         protected override void Dispose(bool disposing)

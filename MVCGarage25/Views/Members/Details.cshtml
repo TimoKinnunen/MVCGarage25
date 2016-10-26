@@ -36,10 +36,8 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => vehicle.RegistrationNumber)
-                            @Html.DisplayFor(modelItem => vehicle.Member.FullName)
-                        </td>
-                        <td>
+                            @Html.DisplayFor(modelItem => vehicle.RegistrationNumber) |
+                            @Html.DisplayFor(modelItem => vehicle.VehicleType.Type) |
                             @Html.ActionLink("View details", "Details", "Vehicles", new { id = vehicle.Id }, null)
                         </td>
                     </tr>
