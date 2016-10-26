@@ -1,0 +1,106 @@
+﻿@model MVCGarage25.Models.Vehicle
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Vehicle</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Member.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VehicleType.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VehicleType.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RegistrationNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegistrationNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartParkingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartParkingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndParkingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndParkingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ParkingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParkingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ParkingCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParkingCostPerHour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ParkingCostPerHour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParkingCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfWheels)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfWheels)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BrandAndModel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BrandAndModel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

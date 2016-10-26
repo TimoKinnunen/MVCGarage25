@@ -13,12 +13,14 @@ namespace MVCGarage25.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Member")]
         public int MemberId { get; set; }
 
         [Display(Name = "Member")]
         virtual public Member Member { get; set; } //owner
 
         [Required]
+        [Display(Name = "Vehicle type")]
         public int VehicleTypeId { get; set; }
 
         [Display(Name = "Vehicle type")]
@@ -29,16 +31,13 @@ namespace MVCGarage25.Models
         [Display(Name = "Registration number")]
         public string RegistrationNumber { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:g}")] //g Default date & time 10/12/2002 10:11 PM
+        [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
         [Display(Name = "Checked in")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime StartParkingTime { get; set; }
 
-
-        [DisplayFormat(NullDisplayText = "Not checked out yet", DataFormatString = "{0:g}")] //g Default date & time 10/12/2002 10:11 PM
+        [DisplayFormat(NullDisplayText = "Not checked out yet", DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
         [Display(Name = "Checked out")]
         public DateTime? EndParkingTime { get; set; }
-
 
         [DisplayFormat(DataFormatString = "{0:dd\\:hh\\:mm}")]
         [Display(Name = "Parking time dd:hh:mm")]
@@ -82,9 +81,7 @@ namespace MVCGarage25.Models
         public int ParkingCost
         {
             get { return (int)ParkingTime.TotalMinutes * ParkingCostPerHour / 60; }
-
         }
-
 
         [Range(1, 10, ErrorMessage = "Value for number of wheels must be between 1 and 10.")]
         [Display(Name = "Number of wheels")]
