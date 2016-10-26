@@ -7,7 +7,7 @@ namespace MVCGarage25.Models
     /// <summary>
     /// Members of garage with or without parked vehicles in garage
     /// </summary>
-    [DisplayColumn("FullName", "FullName", false)]
+    //[DisplayColumn("FullName", "FullName", false)]
     public class Member
     {
         [Key]

@@ -13,12 +13,14 @@ namespace MVCGarage25.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Member")]
         public int MemberId { get; set; }
 
         [Display(Name = "Member")]
         virtual public Member Member { get; set; } //owner
 
         [Required]
+        [Display(Name = "Vehicle type")]
         public int VehicleTypeId { get; set; }
 
         [Display(Name = "Vehicle type")]

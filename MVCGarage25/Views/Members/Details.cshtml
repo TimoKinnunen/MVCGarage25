@@ -1,0 +1,55 @@
+﻿@model MVCGarage25.Models.Member
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Member</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        @*nytt*@
+        <dt>
+            @Html.DisplayNameFor(x => x.ParkedVehicles)
+
+        <dd>
+            <table>
+                @foreach (var vehicle in Model.ParkedVehicles)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => vehicle.RegistrationNumber)
+                            @Html.DisplayFor(modelItem => vehicle.Member.FullName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("View details", "Details", "Vehicles", new { id = vehicle.Id }, null)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+        @*nytt*@
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
