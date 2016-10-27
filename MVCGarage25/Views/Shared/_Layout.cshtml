@@ -19,25 +19,26 @@
                 @Html.ActionLink("MVCGarage25", "Index", "Vehicles", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="row">
-                <div class="navbar-collapse collapse col-md-6">
+                <div class="navbar-collapse collapse col-md-12">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Member", "Index", "Members")</li>
+                        @using (Html.BeginForm("Search", "Members", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+                        {
+                            <li>
+                                @Html.TextBox("membersearchtext", "", new { placeholder = "Search member" })
+                                <button type="submit" class="btn btn-default">Search</button>
+                            </li>
+                        }
                         <li>@Html.ActionLink("Vehicle", "Index", "Vehicles")</li>
-                        @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        @using (Html.BeginForm("Search", "Vehicles", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+                        {
+                            <li>
+                                @Html.TextBox("vehiclesearchtext", "", new { placeholder = "Search vehicle" })
+                                <button type="submit" class="btn btn-default">Search</button>
+                            </li>
+                        }
+
                     </ul>
-                </div>
-                <div class="navbar-right col-md-6">
-                    @using (Html.BeginForm("Search", "Vehicles", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
-                    {
-                        @Html.TextBox("vehiclesearchtext", "Search vehicle")
-                        <button type="submit" class="btn btn-default">Search</button>
-                    }
-                    @using (Html.BeginForm("Search", "Members", FormMethod.Get, new { @class = "navbar-form navbar-right" }))
-                    {
-                        @Html.TextBox("membersearchtext", "Search member")
-                        <button type="submit" class="btn btn-default">Search</button>
-                    }
                 </div>
             </div>
         </div>
