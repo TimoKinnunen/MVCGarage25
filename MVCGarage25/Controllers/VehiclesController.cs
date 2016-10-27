@@ -15,6 +15,8 @@ namespace MVCGarage25.Controllers
     {
         private MVCGarage25Context db = new MVCGarage25Context();
 
+        public delegate IEnumerable<T> OrderMethod<T, TKey>(Func<T, TKey> OrderColumn);
+
         // POST: Vehicles/Search
         public ActionResult Search(string vehiclesearchtext)
         {
@@ -37,17 +39,32 @@ namespace MVCGarage25.Controllers
                 //v.ParkingCostPerHour.ToString().ToLower().Contains(vehiclesearchtext)
                 );
             ViewBag.DetailedView = true;
-            ViewBag.SearchResultText = "Search with '"+ vehiclesearchtext + "' resulted in " + vehicles.Count().ToString() + " vehicles";
+            ViewBag.SearchResultText = "Search with '" + vehiclesearchtext + "' resulted in " + vehicles.Count().ToString() + " vehicles";
             return View(vehicles.ToList());
         }
 
         // GET: Vehicles
         public ActionResult Index()
         {
+            // Get view options
+
             bool detailedView = Request["view"] == "detailed";
             ViewBag.DetailedView = detailedView;
             string itemsToShow = Request["show"] ?? "all";
             ViewBag.Show = itemsToShow;
+
+            var vehicles = db.Vehicles.Include(v => v.Member).Include(v => v.VehicleType);
+            if (itemsToShow == "checkedin")
+            {
+                vehicles = vehicles.Where(v => v.EndParkingTime == null);
+            }
+            else if (itemsToShow == "checkedout")
+            {
+                vehicles = vehicles.Where(v => v.EndParkingTime != null);
+            }
+
+            // Get sorting options
+
             string sortColumn = Request["sortcolumn"] ?? "member";
             ViewBag.SortColumn = sortColumn;
             string sortOption = Request["sortoption"] ?? "ascending";
@@ -59,53 +76,79 @@ namespace MVCGarage25.Controllers
             columns.Add(new SelectListItem() { Value = "regno", Text = "Registration number" });
             ViewBag.SortColumnList = columns;
 
-            var vehicles = db.Vehicles.Include(v => v.Member).Include(v => v.VehicleType);
-            if (itemsToShow == "checkedin")
+            // This variant leads to a lot of duplicated code ... :-(
+
+            //if (sortOption == "ascending")
+            //{
+            //    switch (sortColumn)
+            //    {
+            //        case "memberfirstname":
+            //            vehicles = vehicles.OrderBy(v => v.Member.FirstName);
+            //            break;
+            //        case "memberlastname":
+            //            vehicles = vehicles.OrderBy(v => v.Member.LastName);
+            //            break;
+            //        case "type":
+            //            vehicles = vehicles.OrderBy(v => v.VehicleType.Type);
+            //            break;
+            //        case "regno":
+            //            vehicles = vehicles.OrderBy(v => v.RegistrationNumber);
+            //            break;
+            //    }
+            //}
+            //else
+            //{
+            //    switch (sortColumn)
+            //    {
+            //        case "memberfirstname":
+            //            vehicles = vehicles.OrderByDescending(v => v.Member.FirstName);
+            //            break;
+            //        case "memberlastname":
+            //            vehicles = vehicles.OrderByDescending(v => v.Member.LastName);
+            //            break;
+            //        case "type":
+            //            vehicles = vehicles.OrderByDescending(v => v.VehicleType.Type);
+            //            break;
+            //        case "regno":
+            //            vehicles = vehicles.OrderByDescending(v => v.RegistrationNumber);
+            //            break;
+            //    }
+            //}
+
+            // This variant requires that we have declared this delegate:
+            // public delegate IEnumerable<T> OrderMethod<T, TKey>(Func<T, TKey> OrderColumn);
+
+            OrderMethod<Vehicle, string> orderMethod;
+            Func<Vehicle, string> orderColumn;
+            if (sortOption == "ascending")
             {
-                vehicles = vehicles.Where(v => v.EndParkingTime == null);
-            }
-            else if (itemsToShow == "checkedout")
-            {
-                vehicles = vehicles.Where(v => v.EndParkingTime != null);
-            }
-            if(sortOption=="ascending")
-            {
-                switch (sortColumn)
-                {
-                    case "memberfirstname":
-                        vehicles = vehicles.OrderBy(v => v.Member.FirstName);
-                        break;
-                    case "memberlastname":
-                        vehicles = vehicles.OrderBy(v => v.Member.LastName);
-                        break;
-                    case "type":
-                        vehicles = vehicles.OrderBy(v => v.VehicleType.Type);
-                        break;
-                    case "regno":
-                        vehicles = vehicles.OrderBy(v => v.RegistrationNumber);
-                        break;
-                }
+                orderMethod = vehicles.OrderBy;
             }
             else
             {
-                switch (sortColumn)
-                {
-                    case "memberfirstname":
-                        vehicles = vehicles.OrderByDescending(v => v.Member.FirstName);
-                        break;
-                    case "memberlastname":
-                        vehicles = vehicles.OrderByDescending(v => v.Member.LastName);
-                        break;
-                    case "type":
-                        vehicles = vehicles.OrderByDescending(v => v.VehicleType.Type);
-                        break;
-                    case "regno":
-                        vehicles = vehicles.OrderByDescending(v => v.RegistrationNumber);
-                        break;
-                }
+                orderMethod = vehicles.OrderByDescending;
             }
-
-            return View(vehicles.ToList());
+            switch (sortColumn)
+            {
+                case "memberfirstname":
+                    orderColumn = v => v.Member.FirstName;
+                    break;
+                case "memberlastname":
+                    orderColumn = v => v.Member.LastName;
+                    break;
+                case "type":
+                    orderColumn = v => v.VehicleType.Type;
+                    break;
+                case "regno":
+                    orderColumn = v => v.RegistrationNumber;
+                    break;
+                default:
+                    orderColumn = v => v.Member.FirstName;
+                    break;
+            }
+            var vehiclesToView = orderMethod(orderColumn).ToList();
+            
+            return View(vehiclesToView);
         }
 
         // GET: Vehicles/Details/5
