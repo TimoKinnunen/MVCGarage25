@@ -12,6 +12,19 @@ namespace MVCGarage25.Controllers
     {
         private MVCGarage25Context db = new MVCGarage25Context();
 
+        // POST: Members/Search
+        public ActionResult Search(string membersearchtext)
+        {
+            membersearchtext = membersearchtext.ToLower();
+            var members = db.Members
+                .Where(m =>
+                    m.FirstName.ToLower().Contains(membersearchtext) ||
+                    m.LastName.ToLower().Contains(membersearchtext) 
+                );
+            ViewBag.SearchResultText = "Search with '" + membersearchtext + "' resulted in " + members.Count().ToString() + " members";
+            return View(members.ToList());
+        }
+
         // GET: Members
         public ActionResult Index()
         {
