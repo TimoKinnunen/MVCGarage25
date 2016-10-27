@@ -1,20 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MVCGarage25.DAL;
+using MVCGarage25.Models;
+using System;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using MVCGarage25.DAL;
-using MVCGarage25.Models;
-using System.Data.Entity.Infrastructure;
 
 namespace MVCGarage25.Controllers
 {
     public class VehiclesController : Controller
     {
         private MVCGarage25Context db = new MVCGarage25Context();
+
+        // POST: Vehicles/Search
+        public ActionResult Search(string vehiclesearchtext)
+        {
+            vehiclesearchtext = vehiclesearchtext.ToLower();
+            var vehicles = db.Vehicles
+                .Include(v => v.Member)
+                .Include(v => v.VehicleType)
+                .Where(v =>
+                    v.BrandAndModel.ToLower().Contains(vehiclesearchtext) ||
+                    v.Color.ToLower().Contains(vehiclesearchtext) ||
+                    v.NumberOfWheels.ToString().ToLower().Contains(vehiclesearchtext) ||
+                    v.RegistrationNumber.ToString().ToLower().Contains(vehiclesearchtext) ||
+                    v.VehicleType.Type.ToLower().Contains(vehiclesearchtext) ||
+                    v.Member.FirstName.ToLower().Contains(vehiclesearchtext) ||
+                    v.Member.LastName.ToLower().Contains(vehiclesearchtext)
+                //v.StartParkingTime.ToString().ToLower().Contains(vehiclesearchtext) ||
+                //v.EndParkingTime.ToString().ToLower().Contains(vehiclesearchtext)
+                //v.ParkingTime.ToString().ToLower().Contains(vehiclesearchtext) ||
+                //v.ParkingCost.ToString().ToLower().Contains(vehiclesearchtext) ||
+                //v.ParkingCostPerHour.ToString().ToLower().Contains(vehiclesearchtext)
+                );
+            ViewBag.DetailedView = true;
+            ViewBag.SearchResultText = "Search with '"+ vehiclesearchtext + "' resulted in " + vehicles.Count().ToString() + " vehicles";
+            return View(vehicles.ToList());
+        }
 
         // GET: Vehicles
         public ActionResult Index()
@@ -35,11 +59,11 @@ namespace MVCGarage25.Controllers
             ViewBag.SortColumnList = columns;
 
             var vehicles = db.Vehicles.Include(v => v.Member).Include(v => v.VehicleType);
-            if(itemsToShow=="checkedin")
+            if (itemsToShow == "checkedin")
             {
                 vehicles = vehicles.Where(v => v.EndParkingTime == null);
             }
-            else if(itemsToShow=="checkedout")
+            else if (itemsToShow == "checkedout")
             {
                 vehicles = vehicles.Where(v => v.EndParkingTime != null);
             }
