@@ -1,20 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MVCGarage25.DAL;
+using MVCGarage25.Models;
+using System;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using MVCGarage25.DAL;
-using MVCGarage25.Models;
-using System.Data.Entity.Infrastructure;
 
 namespace MVCGarage25.Controllers
 {
     public class VehiclesController : Controller
     {
         private MVCGarage25Context db = new MVCGarage25Context();
+
+        // GET: Vehicles/Search
+        public ActionResult Search(string searchtext)
+        {
+            searchtext = searchtext.ToLower();
+            var vehicles = db.Vehicles
+                .Include(v => v.Member)
+                .Include(v => v.VehicleType)
+                .Where(v =>
+                    v.BrandAndModel.ToLower().Contains(searchtext) ||
+                    v.Color.ToLower().Contains(searchtext) ||
+                    v.NumberOfWheels.ToString().ToLower().Contains(searchtext) ||
+                    v.RegistrationNumber.ToString().ToLower().Contains(searchtext) ||
+                    //v.VehicleType.Type.ToLower().Contains(searchtext) ||
+                    v.Member.FirstName.ToLower().Contains(searchtext) ||
+                    v.Member.LastName.ToLower().Contains(searchtext)
+                    //v.StartParkingTime.ToString().ToLower().Contains(searchtext) ||
+                    //v.EndParkingTime.ToString().ToLower().Contains(searchtext)
+                    //v.ParkingTime.ToString().ToLower().Contains(searchtext) ||
+                    //v.ParkingCost.ToString().ToLower().Contains(searchtext) ||
+                    //v.ParkingCostPerHour.ToString().ToLower().Contains(searchtext)
+                );
+            ViewBag.DetailedView = true;
+            return View(vehicles.ToList());
+        }
 
         // GET: Vehicles
         public ActionResult Index()

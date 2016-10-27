@@ -23,8 +23,13 @@
                     <li>@Html.ActionLink("Member", "Index", "Members")</li>
                     <li>@Html.ActionLink("Vehicle", "Index", "Vehicles")</li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
+                @using (Html.BeginForm("Search", "Vehicles", FormMethod.Get, new { @class = "navbar-form navbar-right" }))
+                {
+                    @Html.TextBox("searchtext")
+                    <button type="submit" class="btn btn-default">Submit</button>
+                }
             </div>
         </div>
     </div>

@@ -1,0 +1,156 @@
+﻿@model IEnumerable<MVCGarage25.Models.Vehicle>
+
+@{
+    ViewBag.Title = "Vehicles in the garage";
+}
+
+<h2>Search result(s)</h2>
+
+@*<p>
+    @Html.ActionLink("Check in vehicle", "CheckIn")
+</p>*@
+@*<form method="post">
+    <fieldset class="col-md-6" style="border: 1px solid #000;">
+        <legend style="width: auto; margin-bottom: 1em; border-bottom: none;">View:</legend>
+        <label>
+            @Html.RadioButton("view", "overview", (bool)(ViewBag.DetailedView == false || ViewBag.View == null), new { onclick = "this.form.submit();" })
+            Overview
+        </label>
+        <label>
+            @Html.RadioButton("view", "detailed", (bool)(ViewBag.DetailedView == true), new { onclick = "this.form.submit();" })
+            Detailed
+        </label>
+    </fieldset>
+    <fieldset class="col-md-6" style="border: 1px solid #000;">
+        <legend style="width: auto; margin-bottom: 1em; border-bottom: none;">Show:</legend>
+        <label>
+            @Html.RadioButton("show", "all", (bool)(ViewBag.Show == "all" || ViewBag.View == null), new { onclick = "this.form.submit();" })
+            All vehicles
+        </label>
+        <label>
+            @Html.RadioButton("show", "checkedin", (bool)(ViewBag.Show == "checkedin"), new { onclick = "this.form.submit();" })
+            Only checked in vehicles
+        </label>
+        <label>
+            @Html.RadioButton("show", "checkedout", (bool)(ViewBag.Show == "checkedout"), new { onclick = "this.form.submit();" })
+            Only checked out vehicles
+        </label>
+    </fieldset>
+</form>*@
+@*<script type='text/javascript'>
+    $(document).ready(function()
+    {
+        $('input[name=view]').change(function()
+        {
+            $('form').submit();
+        });
+    });
+    </script>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Member.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleType.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegistrationNumber)
+        </th>
+        @if (ViewBag.DetailedView)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfWheels)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BrandAndModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.IsCheckedOut)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ParkingTime)
+        </th>
+        @if (ViewBag.DetailedView)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.StartParkingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndParkingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParkingCostPerHour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParkingCost)
+            </th>
+        }
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleType.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationNumber)
+            </td>
+            @if (ViewBag.DetailedView)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfWheels)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BrandAndModel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCheckedOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParkingTime)
+            </td>
+            @if (ViewBag.DetailedView)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartParkingTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndParkingTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParkingCostPerHour)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParkingCost)
+                </td>
+            }
+            @*<td>
+                @Html.ActionLink("View details", "Details", new { id = item.Id }, new { title = "View details for " + item.RegistrationNumber }) |
+                @if (item.IsCheckedOut)
+                {
+                    @Html.ActionLink("Print receipt", "Receipt", new { id = item.Id }, new { title = "Print receipt for " + item.RegistrationNumber })
+                }
+                else
+                {
+                    @Html.ActionLink("Edit properties", "Edit", new { id = item.Id }, new { title = "Edit properties for " + item.RegistrationNumber }) @:|
+                    @Html.ActionLink("Check out vehicle", "CheckOut", new { id = item.Id }, new { title = "Check out " + item.RegistrationNumber })
+                }
+            </td>*@
+        </tr>
+    }
+
+</table>
