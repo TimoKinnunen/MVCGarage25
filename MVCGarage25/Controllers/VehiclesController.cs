@@ -19,7 +19,19 @@ namespace MVCGarage25.Controllers
         // GET: Vehicles
         public ActionResult Index()
         {
+            bool detailedView = Request["view"] == "detailed";
+            ViewBag.DetailedView = detailedView;
+            string itemsToShow = Request["show"] ?? "all";
+            ViewBag.Show = itemsToShow;
             var vehicles = db.Vehicles.Include(v => v.Member).Include(v => v.VehicleType);
+            if(itemsToShow=="checkedin")
+            {
+                vehicles = vehicles.Where(v => v.EndParkingTime == null);
+            }
+            else if(itemsToShow=="checkedout")
+            {
+                vehicles = vehicles.Where(v => v.EndParkingTime != null);
+            }
             return View(vehicles.ToList());
         }
 
