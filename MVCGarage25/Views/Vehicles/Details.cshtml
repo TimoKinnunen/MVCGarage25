@@ -105,5 +105,9 @@
     {
         @Html.ActionLink("Edit this vehicle", "Edit", new { id = Model.Id }) @:|
     }
+    else
+    {
+        @Html.ActionLink("Print receipt", "Receipt", new { id = Model.Id }) @:|
+    }
     @Html.ActionLink("To vehicle list", "Index")
 </p>

@@ -28,23 +28,46 @@
 
         @*nytt*@
         <dt>
-            @Html.DisplayNameFor(x => x.ParkedVehicles)
+            @Html.DisplayNameFor(x => x.ParkedVehicles) (checked in)
 
         <dd>
             <table>
                 @foreach (var vehicle in Model.ParkedVehicles)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => vehicle.RegistrationNumber) |
-                            @Html.DisplayFor(modelItem => vehicle.VehicleType.Type) |
-                            @Html.ActionLink("View details", "Details", "Vehicles", new { id = vehicle.Id }, null)
-                        </td>
-                    </tr>
+                    if (!vehicle.IsCheckedOut)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => vehicle.RegistrationNumber) |
+                                @Html.DisplayFor(modelItem => vehicle.VehicleType.Type) |
+                                @Html.ActionLink("View details", "Details", "Vehicles", new { id = vehicle.Id }, null)
+                            </td>
+                        </tr>
+                    }
                 }
             </table>
         </dd>
         @*nytt*@
+        <dt>
+            @Html.DisplayNameFor(x => x.ParkedVehicles) (checked out)
+
+        <dd>
+            <table>
+                @foreach (var vehicle in Model.ParkedVehicles)
+                {
+                    if (vehicle.IsCheckedOut)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => vehicle.RegistrationNumber) |
+                                @Html.DisplayFor(modelItem => vehicle.VehicleType.Type) |
+                                @Html.ActionLink("View details", "Details", "Vehicles", new { id = vehicle.Id }, null)
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </dd>
     </dl>
 </div>
 <p>
