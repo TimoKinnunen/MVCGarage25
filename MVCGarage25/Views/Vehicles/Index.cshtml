@@ -36,6 +36,18 @@
             Only checked out vehicles
         </label>
     </fieldset>
+    <fieldset class="col-md-12" style="border: 1px solid #000;">
+        <legend style="width: auto; margin-bottom: 1em; border-bottom: none;">Order by:</legend>
+        @Html.DropDownList("sortcolumn", new SelectList(ViewBag.SortColumnList, "Value", "Text"), new { onchange = "this.form.submit();" })
+        <label>
+            @Html.RadioButton("sortoption", "ascending", (bool)(ViewBag.SortOption == "ascending" || ViewBag.SortOption == null), new { onclick = "this.form.submit();" })
+            Ascending
+        </label>
+        <label>
+            @Html.RadioButton("sortoption", "descending", (bool)(ViewBag.SortOption == "descending"), new { onclick = "this.form.submit();" })
+            Descending
+        </label>
+    </fieldset>
 </form>
 @*<script type='text/javascript'>
     $(document).ready(function()

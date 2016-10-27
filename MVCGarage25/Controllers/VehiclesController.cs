@@ -23,6 +23,17 @@ namespace MVCGarage25.Controllers
             ViewBag.DetailedView = detailedView;
             string itemsToShow = Request["show"] ?? "all";
             ViewBag.Show = itemsToShow;
+            string sortColumn = Request["sortcolumn"] ?? "member";
+            ViewBag.SortColumn = sortColumn;
+            string sortOption = Request["sortoption"] ?? "ascending";
+            ViewBag.SortOption = sortOption;
+            var columns = new List<SelectListItem>();
+            columns.Add(new SelectListItem() { Value = "memberfirstname", Text = "Member's first name" });
+            columns.Add(new SelectListItem() { Value = "memberlastname", Text = "Member's last name" });
+            columns.Add(new SelectListItem() { Value = "type", Text = "Vehicle type" });
+            columns.Add(new SelectListItem() { Value = "regno", Text = "Registration number" });
+            ViewBag.SortColumnList = columns;
+
             var vehicles = db.Vehicles.Include(v => v.Member).Include(v => v.VehicleType);
             if(itemsToShow=="checkedin")
             {
@@ -32,6 +43,43 @@ namespace MVCGarage25.Controllers
             {
                 vehicles = vehicles.Where(v => v.EndParkingTime != null);
             }
+            if(sortOption=="ascending")
+            {
+                switch (sortColumn)
+                {
+                    case "memberfirstname":
+                        vehicles = vehicles.OrderBy(v => v.Member.FirstName);
+                        break;
+                    case "memberlastname":
+                        vehicles = vehicles.OrderBy(v => v.Member.LastName);
+                        break;
+                    case "type":
+                        vehicles = vehicles.OrderBy(v => v.VehicleType.Type);
+                        break;
+                    case "regno":
+                        vehicles = vehicles.OrderBy(v => v.RegistrationNumber);
+                        break;
+                }
+            }
+            else
+            {
+                switch (sortColumn)
+                {
+                    case "memberfirstname":
+                        vehicles = vehicles.OrderByDescending(v => v.Member.FirstName);
+                        break;
+                    case "memberlastname":
+                        vehicles = vehicles.OrderByDescending(v => v.Member.LastName);
+                        break;
+                    case "type":
+                        vehicles = vehicles.OrderByDescending(v => v.VehicleType.Type);
+                        break;
+                    case "regno":
+                        vehicles = vehicles.OrderByDescending(v => v.RegistrationNumber);
+                        break;
+                }
+            }
+
             return View(vehicles.ToList());
         }
 
