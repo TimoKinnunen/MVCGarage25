@@ -13,7 +13,7 @@ namespace MVCGarage25.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201610261458332_Init"; }
+            get { return "201610280726446_Init"; }
         }
         
         string IMigrationMetadata.Source

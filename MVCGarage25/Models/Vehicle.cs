@@ -26,7 +26,7 @@ namespace MVCGarage25.Models
         [Display(Name = "Vehicle type")]
         virtual public VehicleType VehicleType { get; set; } //personbil, lastbil
 
-        [Required, Index(IsUnique = true)]
+        [Required, Index("IX_UniqueParkedRegNo", 1, IsUnique = true)]
         [StringLength(100)]
         [Display(Name = "Registration number")]
         public string RegistrationNumber { get; set; }
@@ -35,6 +35,7 @@ namespace MVCGarage25.Models
         [Display(Name = "Checked in")]
         public DateTime StartParkingTime { get; set; }
 
+        [Index("IX_UniqueParkedRegNo", 2, IsUnique = true)]
         [DisplayFormat(NullDisplayText = "Not checked out yet", DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
         [Display(Name = "Checked out")]
         public DateTime? EndParkingTime { get; set; }

@@ -37,7 +37,7 @@ namespace MVCGarage25.Migrations
                 .ForeignKey("dbo.VehicleTypes", t => t.VehicleTypeId)
                 .Index(t => t.MemberId)
                 .Index(t => t.VehicleTypeId)
-                .Index(t => t.RegistrationNumber, unique: true);
+                .Index(t => new { t.RegistrationNumber, t.EndParkingTime }, unique: true, name: "IX_UniqueParkedRegNo");
             
             CreateTable(
                 "dbo.VehicleTypes",
@@ -56,7 +56,7 @@ namespace MVCGarage25.Migrations
             DropForeignKey("dbo.Vehicles", "VehicleTypeId", "dbo.VehicleTypes");
             DropForeignKey("dbo.Vehicles", "MemberId", "dbo.Members");
             DropIndex("dbo.VehicleTypes", new[] { "Type" });
-            DropIndex("dbo.Vehicles", new[] { "RegistrationNumber" });
+            DropIndex("dbo.Vehicles", "IX_UniqueParkedRegNo");
             DropIndex("dbo.Vehicles", new[] { "VehicleTypeId" });
             DropIndex("dbo.Vehicles", new[] { "MemberId" });
             DropIndex("dbo.Members", "IX_MemberFullName");
