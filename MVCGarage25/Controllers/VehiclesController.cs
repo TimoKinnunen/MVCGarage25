@@ -70,6 +70,7 @@ namespace MVCGarage25.Controllers
             string sortOption = Request["sortoption"] ?? "ascending";
             ViewBag.SortOption = sortOption;
             var columns = new List<SelectListItem>();
+            columns.Add(new SelectListItem() { Value = "memberfullname", Text = "Member's full name" });
             columns.Add(new SelectListItem() { Value = "memberfirstname", Text = "Member's first name" });
             columns.Add(new SelectListItem() { Value = "memberlastname", Text = "Member's last name" });
             columns.Add(new SelectListItem() { Value = "type", Text = "Vehicle type" });
@@ -130,6 +131,12 @@ namespace MVCGarage25.Controllers
             }
             switch (sortColumn)
             {
+                case "memberfullname":
+                    // FullName = LastName + FirstName
+                    // Must combine these two columns manually,
+                    // because LINQ can't order by a derived column
+                    orderColumn = v => (v.Member.LastName + ", " + v.Member.FirstName);
+                    break;
                 case "memberfirstname":
                     orderColumn = v => v.Member.FirstName;
                     break;
@@ -143,7 +150,7 @@ namespace MVCGarage25.Controllers
                     orderColumn = v => v.RegistrationNumber;
                     break;
                 default:
-                    orderColumn = v => v.Member.FirstName;
+                    orderColumn = v => (v.Member.LastName + ", " + v.Member.FirstName);
                     break;
             }
             var vehiclesToView = orderMethod(orderColumn).ToList();
